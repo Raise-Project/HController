@@ -1,0 +1,6 @@
+# HController
+Hexapod controller
+
+More details coming soon...
+# Next Step
+* ...
