@@ -2,7 +2,14 @@
     "name": "HController",
     "sender": {
         "PS3": {},
-        "Keyboard": {}
+        "Keyboard": {
+            "z": false,
+            "q": false,
+            "s": false,
+            "d": false,
+            "p": false,
+            "esc": false
+        }
     },
     "listener": []
 }

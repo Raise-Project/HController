@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Mon Nov 02 2020
+Last Modified: Wed Nov 04 2020
 Modified By: Zentetsu
 
 ----
@@ -36,10 +36,21 @@ HISTORY:
 
 from CorState import StateMachine
 import curses
+import threading
+import time
 
+# from Controller.Keyboard import Keyboard
 
 if __name__ == "__main__":
     state_machine = StateMachine("HController")
     state_machine.loadJSON("./data/HController_SM.json")
 
     state_machine.start()
+    # k = Keyboard()
+
+    # thread = threading.Thread(target=k.readInput, args=())
+    # thread.start()
+
+    # while not k.getInput()['esc']:
+    #     print(k.getInput(), len(k.getInput()))
+    #     time.sleep(0.1)
