@@ -1,14 +1,17 @@
 {
-    "name": "HController",
+    "name": "HController_Module",
     "sender": {
-        "PS3": {},
-        "Keyboard": {
-            "z": false,
-            "q": false,
-            "s": false,
-            "d": false,
-            "p": false,
-            "esc": false
+        "HController": {
+            "status":"ON",
+            "PS3": {},
+            "Keyboard": {
+                "z": false,
+                "q": false,
+                "s": false,
+                "d": false,
+                "p": false,
+                "esc": false
+            }
         }
     },
     "listener": []

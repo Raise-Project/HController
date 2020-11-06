@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Wed Nov 04 2020
+Last Modified: Fri Nov 06 2020
 Modified By: Zentetsu
 
 ----
@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2020-11-06	Zen	Adding state to clean before exit
 2020-11-04	Zen	First step in implementation of SM HController
 '''
 
@@ -56,10 +57,10 @@ def a_initController():
 	cPS3 = ControllerPS3("/dev/input/js0")
 
 	if cPS3 != -1:
-		HController_Modules.delListener("Keyboard")
+		del HController_Modules["HController"]["Keyboard"]
 	else:
 		cK = Keyboard()
-		HController_Modules.delSender("PS3")
+		del HController_Modules["HController"]["PS3"]
 		HController_Modules
 		thread = threading.Thread(target=cK.readInput, args=())
 
@@ -75,21 +76,28 @@ def a_Main():
 def a_SendControl():
 	global cK, HController_Modules
 
-	for k in cK.getInput().keys():
-		HController_Modules["Keyboard"][k] =  cK.getInput()[k]
+	HController_Modules["HController"]["Keyboard"] =  cK.getInput()
+
+def a_stopController():
+	global HController_Modules
+
+	HController_Modules.stopModule()
 
 def t_init():
 	return True
 
 def t_exit():
-	global cK, HController_Modules
-
-	return cK.getInput()['esc']
+	return True
 
 def t_startController():
 	global init_ended
 
 	return init_ended
+
+def t_stopController():
+	global cK
+
+	return cK.getInput()['esc']
 
 def t_beginSC():
 	global cK
@@ -99,4 +107,7 @@ def t_beginSC():
 def t_endSC():
 	return True
 
-#----------------------------------------------------------------------#
+#----------------------------------------------------------------------#def a_stopController():
+	#TODO
+	pass
+
