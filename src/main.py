@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Fri Nov 06 2020
+Last Modified: Sat Nov 07 2020
 Modified By: Zentetsu
 
 ----
@@ -31,18 +31,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2020-11-07	Zen	Refactoring KB name
 2020-11-06	Zen	Test for SM and Module
 '''
 
 
+from Controller.ControllerKB import ControllerKB
+
 from CorState import StateMachine
-import curses
-import threading
-import time
 from SharedMemory import Client
 from IRONbark import Module
 
-from Controller.Keyboard import Keyboard
+import threading
+import curses
+import time
 
 if __name__ == "__main__":
     state_machine = StateMachine("HController")
@@ -51,7 +53,7 @@ if __name__ == "__main__":
     state_machine.start()
 
     ###########
-    # k = Keyboard()
+    # k = ControllerKB()
 
     # thread = threading.Thread(target=k.readInput, args=())
     # thread.start()
@@ -63,7 +65,7 @@ if __name__ == "__main__":
 
     #########################################################
 
-    # cK = Keyboard()
+    # cK = ControllerKB()
     # thread = threading.Thread(target=cK.readInput, args=())
     # thread.start()
 
@@ -84,7 +86,7 @@ if __name__ == "__main__":
 
     #########################################################
 
-    # cK = Keyboard()
+    # cK = ControllerKB()
     # thread = threading.Thread(target=cK.readInput, args=())
     # thread.start()
 

@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Wed Nov 04 2020
+Last Modified: Sat Nov 07 2020
 Modified By: Zentetsu
 
 ----
@@ -31,23 +31,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2020-11-07	Zen	Refactoring KB name
 2020-11-04	Zen	Adding Keybard class with key listener
 '''
 
 
-from getkey import getkey, keys
-import time
 from pynput.keyboard import Listener, Key
+import time
 
-class Keyboard:
+class ControllerKB:
     def __new__(cls, verbose=False):
         if not hasattr(cls, 'instance') or not cls.instance:
             cls.instance = super().__new__(cls)
-            cls.instance.Keyboard(verbose)
+            cls.instance.ControllerKB(verbose)
 
         return cls.instance
 
-    def Keyboard(self, verbose):
+    def ControllerKB(self, verbose):
         self.verbose = verbose
 
         self.command = {'z': False, 'q': False, 's': False, 'd': False, 'p': False, 'esc': False}

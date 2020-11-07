@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Fri Nov 06 2020
+Last Modified: Sat Nov 07 2020
 Modified By: Zentetsu
 
 ----
@@ -31,13 +31,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2020-11-07	Zen	Refactoring KB name
 2020-11-06	Zen	Adding state to clean before exit
 2020-11-04	Zen	First step in implementation of SM HController
 '''
 
-import IRONbark
+
 from Controller.ControllerPS3 import ControllerPS3
-from Controller.Keyboard import Keyboard
+from Controller.ControllerKB import ControllerKB
+
+import IRONbark
+
 import threading
 import time
 
@@ -46,11 +50,11 @@ global init_ended, cPS3, HController_Modules, thread
 HController_Modules = None
 init_ended = False
 cPS3 = None
-cK = None
+cKB = None
 thread = None
 
 def a_initController():
-	global init_ended, cPS3, cK, HController_Modules, thread
+	global init_ended, cPS3, cKB, HController_Modules, thread
 
 	HController_Modules = IRONbark.Module(file="./data/HController_Modules.json")
 
@@ -59,24 +63,24 @@ def a_initController():
 	if cPS3 != -1:
 		del HController_Modules["HController"]["Keyboard"]
 	else:
-		cK = Keyboard()
+		cKB = ControllerKB()
 		del HController_Modules["HController"]["PS3"]
 		HController_Modules
-		thread = threading.Thread(target=cK.readInput, args=())
+		thread = threading.Thread(target=cKB.readInput, args=())
 
 	thread.start()
 
 	init_ended = True
 
 def a_Main():
-	global cK
+	global cKB
 
 	time.sleep(0.1)
 
 def a_SendControl():
-	global cK, HController_Modules
+	global cKB, HController_Modules
 
-	HController_Modules["HController"]["Keyboard"] =  cK.getInput()
+	HController_Modules["HController"]["Keyboard"] =  cKB.getInput()
 
 def a_stopController():
 	global HController_Modules
@@ -95,14 +99,14 @@ def t_startController():
 	return init_ended
 
 def t_stopController():
-	global cK
+	global cKB
 
-	return cK.getInput()['esc']
+	return cKB.getInput()['esc']
 
 def t_beginSC():
-	global cK
+	global cKB
 
-	return not cK.getInput()['esc']
+	return not cKB.getInput()['esc']
 
 def t_endSC():
 	return True
