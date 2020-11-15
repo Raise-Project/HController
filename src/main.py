@@ -43,7 +43,6 @@ from SharedMemory import Client
 from IRONbark import Module
 
 import threading
-import curses
 import time
 
 if __name__ == "__main__":

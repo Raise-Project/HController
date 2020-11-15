@@ -72,11 +72,6 @@ def a_initController():
 
 	init_ended = True
 
-def a_Main():
-	global cKB
-
-	time.sleep(0.1)
-
 def a_SendControl():
 	global cKB, HController_Modules
 
@@ -86,6 +81,11 @@ def a_stopController():
 	global HController_Modules
 
 	HController_Modules.stopModule()
+
+def a_Main():
+	global cKB
+
+	time.sleep(0.1)
 
 def t_init():
 	return True
@@ -111,7 +111,4 @@ def t_beginSC():
 def t_endSC():
 	return True
 
-#----------------------------------------------------------------------#def a_stopController():
-	#TODO
-	pass
-
+#----------------------------------------------------------------------#
