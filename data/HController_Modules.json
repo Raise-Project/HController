@@ -3,7 +3,27 @@
     "sender": {
         "HController": {
             "status": "ON",
-            "PS3": {},
+            "PS3": {
+                "leftx": 0,
+                "lefty": 0,
+                "rightx": 0,
+                "righty": 0,
+                "trig0": false,
+                "trig1": false,
+                "trig2": false,
+                "trig3": false,
+                "buttonup": false,
+                "buttondown": false,
+                "buttonleft": false,
+                "buttonright": false,
+                "triangle": false,
+                "circle": false,
+                "cross": false,
+                "square": false,
+                "select": false,
+                "start": false,
+                "ps": false
+            },
             "Keyboard": {
                 "z": false,
                 "q": false,
@@ -12,6 +32,7 @@
                 "p": false,
                 "esc": false
             },
+            "Active": false,
             "time": "00:00:00"
         }
     },

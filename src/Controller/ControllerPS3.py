@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Mon Nov 02 2020
+Last Modified: Mon Nov 18 2020
 Modified By: Zentetsu
 
 ----
@@ -31,16 +31,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2020-11-18	Zen	Updating ControllerPS3 class to run with HMovement
 '''
 
 
 import time
-import os.path
+import os
 
 
 class ControllerPS3:
     def __new__(cls, path, verbose=False):
-        if not os.path.isfile(path):
+        if not os.path.exists(path):
             return -1
 
         if not hasattr(cls, 'instance') or not cls.instance:
@@ -69,14 +70,16 @@ class ControllerPS3:
         self.setStatus(2)
         # self.pairing(self.path)
 
-    def pairing(self, path):
+    def pairing(self):
+        """Attempt to pair controller device
+        """
         self.printMessage(3)
         search = True
         wait = 0
 
         while search:
             try:
-                self.pipe = open(path, 'rb')
+                self.pipe = open(self.path, 'rb')
 
                 self.readInput()
                 self.setStatus(1)
@@ -88,7 +91,8 @@ class ControllerPS3:
 
                 if wait > 5:
                     self.setStatus(2)
-                    cont = input("WARNING: Controller disconnected. Do you want to continue ?(yes/no): ")
+                    cont = input("WARNING: ControllerPS3 disconnected. Do you want to continue ?(yes/no): ")
+                    logging.warning("ControllerPS3 disconnected.")
                     wait = 0
 
                     if cont == "no":
@@ -97,7 +101,6 @@ class ControllerPS3:
                         self.printMessage(3)
 
     def readInput(self):
-        global reading
         self.printMessage(1)
 
         reading = True
@@ -121,64 +124,35 @@ class ControllerPS3:
                             if self.action[4] == '01':
                                 if self.action[7] == '04':
                                     self.joy['trig0'] = True
-                                    if self.verbose:
-                                        print("trig0")
                                 if self.action[7] == '05':
                                     self.joy['trig1'] = True
-                                    if self.verbose:
-                                        print("trig1")
                                 # if self.action[7] == '08':
                                 #     self.joy['trig2'] = True
-                                #     if self.verbose:
-                                #         print("trig2")
                                 # if self.action[7] == '09':
                                 #     self.joy['trig3'] = True
-                                #     if self.verbose:
-                                #         print("trig3")
                                 if self.action[7] == '0D':
                                     self.joy['buttonup'] = True
-                                    if self.verbose:
-                                        print("buttonup")
                                 if self.action[7] == '10':
                                     self.joy['buttonright'] = True
-                                    if self.verbose:
-                                        print("buttonright")
                                 if self.action[7] == '0E':
                                     self.joy['buttondown'] = True
-                                    if self.verbose:
-                                        print("buttondown")
                                 if self.action[7] == '0F':
                                     self.joy['buttonleft'] = True
-                                    if self.verbose:
-                                        print("buttonleft")
                                 if self.action[7] == '02':
                                     self.joy['triangle'] = True
-                                    if self.verbose:
-                                        print("triangle")
                                 if self.action[7] == '01':
                                     self.joy['circle'] = True
-                                    if self.verbose:
-                                        print("circle")
                                 if self.action[7] == '00':
                                     self.joy['cross'] = True
-                                    if self.verbose:
-                                        print("cross")
                                 if self.action[7] == '03':
                                     self.joy['square'] = True
-                                    if self.verbose:
-                                        print("square")
                                 if self.action[7] == '08':
                                     self.joy['select'] = True
-                                    if self.verbose:
-                                        print("select")
                                 if self.action[7] == '09':
                                     self.joy['start'] = True
-                                    if self.verbose:
-                                        print("start")
                                 if self.action[7] == '0A':
                                     self.joy['ps'] = True
-                                    if self.verbose:
-                                        print("ps")
+                                    reading = False
                                 # state = self.action[7]
 
                             else:
@@ -202,9 +176,9 @@ class ControllerPS3:
                                     self.joy['triangle'] = False
                                 if self.action[7] == '01':
                                     self.joy['circle'] = False
-                                if self.action[7] == '04':
-                                    self.joy['cross'] = False
                                 if self.action[7] == '00':
+                                    self.joy['cross'] = False
+                                if self.action[7] == '03':
                                     self.joy['square'] = False
                                 if self.action[7] == '08':
                                     self.joy['select'] = False
@@ -296,9 +270,8 @@ class ControllerPS3:
         return self.joy
 
     def stop(self):
-        global reading
-
-        reading = False
+        if self.joy['ps']:
+            reading = False
 
         self.setStatus(2)
         self.printMessage(2)

@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Sat Nov 07 2020
+Last Modified: Sat Nov 18 2020
 Modified By: Zentetsu
 
 ----
@@ -36,7 +36,7 @@ HISTORY:
 '''
 
 
-from Controller.ControllerKB import ControllerKB
+# from Controller.ControllerKB import ControllerKB
 
 from CorState import StateMachine
 from SharedMemory import Client

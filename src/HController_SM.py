@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Sat Nov 07 2020
+Last Modified: Sat Nov 18 2020
 Modified By: Zentetsu
 
 ----
@@ -31,14 +31,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2020-11-18	Zen	Adding gestion for arm and PS3 Controller
 2020-11-07	Zen	Refactoring KB name
 2020-11-06	Zen	Adding state to clean before exit
 2020-11-04	Zen	First step in implementation of SM HController
 '''
 
 
+import platform
+
 from Controller.ControllerPS3 import ControllerPS3
-from Controller.ControllerKB import ControllerKB
+
+if "arm" not in platform.machine():
+	from Controller.ControllerKB import ControllerKB
 
 import IRONbark
 
@@ -62,10 +67,10 @@ def a_initController():
 
 	if cPS3 != -1:
 		del HController_Modules["HController"]["Keyboard"]
+		thread = threading.Thread(target=cPS3.pairing, args=())
 	else:
 		cKB = ControllerKB()
 		del HController_Modules["HController"]["PS3"]
-		HController_Modules
 		thread = threading.Thread(target=cKB.readInput, args=())
 
 	thread.start()
@@ -73,9 +78,12 @@ def a_initController():
 	init_ended = True
 
 def a_SendControl():
-	global cKB, HController_Modules
+	global cKB, cPS3, HController_Modules
 
-	HController_Modules["HController"]["Keyboard"] =  cKB.getInput()
+	if cPS3 != -1:
+		HController_Modules["HController"]["PS3"] =  cPS3.getInput()
+	else:
+		HController_Modules["HController"]["Keyboard"] =  cKB.getInput()
 
 def a_stopController():
 	global HController_Modules
@@ -99,14 +107,20 @@ def t_startController():
 	return init_ended
 
 def t_stopController():
-	global cKB
+	global cKB, cPS3
 
-	return cKB.getInput()['esc']
+	if cPS3 != -1:
+		return cPS3.getInput()['ps']
+	else:
+		return cKB.getInput()['esc']
 
 def t_beginSC():
-	global cKB
+	global cKB, cPS3
 
-	return not cKB.getInput()['esc']
+	if cPS3 != -1:
+		return not cPS3.getInput()['ps']
+	else:
+		return not cKB.getInput()['esc']
 
 def t_endSC():
 	return True
