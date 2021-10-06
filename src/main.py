@@ -43,13 +43,22 @@ from SharedMemory import Client
 from IRONbark import Module
 
 import threading
+import logging
 import time
+import sys
 
 if __name__ == "__main__":
+    logging.basicConfig(filename=sys.argv[1], format='%(asctime)s - HController - %(levelname)s - %(message)s', level=logging.DEBUG)
+
+    logging.info('Init SM')
     state_machine = StateMachine("HController")
+
+    logging.info('Loading SM')
     state_machine.loadJSON("./data/HController_SM.json")
 
+    logging.info('Starting SM')
     state_machine.start()
+    logging.info('Stoping SM')
 
     ###########
     # k = ControllerKB()
