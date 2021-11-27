@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Sat Nov 18 2020
+Last Modified: Sat Nov 27 2021
 Modified By: Zentetsu
 
 ----
@@ -58,8 +58,12 @@ cPS3 = None
 cKB = None
 thread = None
 
+#----------------------------------------------------------------------#
+# ------------------------------ States ------------------------------ #
+#----------------------------------------------------------------------#
 def a_initController():
 	global init_ended, cPS3, cKB, HController_Modules, thread
+	# print("INIT State")
 
 	HController_Modules = IRONbark.Module(file="./data/HController_Modules.json")
 
@@ -77,42 +81,39 @@ def a_initController():
 
 	init_ended = True
 
+def a_Main():
+	global cKB
+	# print("MAIN State")
+
+	time.sleep(0.1)
+
 def a_SendControl():
 	global cKB, cPS3, HController_Modules
+	# print("SENDC State")
 
 	if cPS3 != -1:
 		HController_Modules["HController"]["PS3"] =  cPS3.getInput()
 	else:
 		HController_Modules["HController"]["Keyboard"] =  cKB.getInput()
 
+	# print(HController_Modules["HController"]["Keyboard"], end="\r", flush=True)
+
 def a_stopController():
 	global HController_Modules
+	# print("STOPC State")
 
 	HController_Modules.stopModule()
 
-def a_Main():
-	global cKB
-
-	time.sleep(0.1)
-
+#----------------------------------------------------------------------#
+# ---------------------------- Transitions --------------------------- #
+#----------------------------------------------------------------------#
 def t_init():
-	return True
-
-def t_exit():
 	return True
 
 def t_startController():
 	global init_ended
 
 	return init_ended
-
-def t_stopController():
-	global cKB, cPS3
-
-	if cPS3 != -1:
-		return cPS3.getInput()['ps']
-	else:
-		return cKB.getInput()['esc']
 
 def t_beginSC():
 	global cKB, cPS3
@@ -125,4 +126,17 @@ def t_beginSC():
 def t_endSC():
 	return True
 
+def t_stopController():
+	global cKB, cPS3
+
+	if cPS3 != -1:
+		return cPS3.getInput()['ps']
+	else:
+		return cKB.getInput()['esc']
+
+def t_exit():
+	return True
+
+#----------------------------------------------------------------------#
+# --------------------------- Sub functions -------------------------- #
 #----------------------------------------------------------------------#

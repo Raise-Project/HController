@@ -2,7 +2,6 @@
     "name": "HController_Module",
     "sender": {
         "HController": {
-            "status": "ON",
             "PS3": {
                 "leftx": 0,
                 "lefty": 0,
@@ -31,9 +30,7 @@
                 "d": false,
                 "p": false,
                 "esc": false
-            },
-            "Active": false,
-            "time": "00:00:00"
+            }
         }
     },
     "listener": []

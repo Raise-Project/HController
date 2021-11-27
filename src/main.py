@@ -39,7 +39,7 @@ HISTORY:
 # from Controller.ControllerKB import ControllerKB
 
 from CorState import StateMachine
-from SharedMemory import Client
+from SharedMemory import SharedMemory
 from IRONbark import Module
 
 import threading
