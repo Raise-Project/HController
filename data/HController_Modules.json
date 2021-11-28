@@ -33,5 +33,5 @@
             }
         }
     },
-    "listener": []
+    "listener": ["HCore"]
 }
