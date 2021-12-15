@@ -92,12 +92,13 @@ def a_SendControl():
 	# print("SENDC State")
 
 	if cPS3 != -1:
-		HController_Modules["HController"]["PS3"] =  cPS3.getInput()
+		HController_Modules["HController"]["PS3"] = cPS3.getInput()
+		# print(HController_Modules["HController"]["PS3"], end="\r", flush=True)
 	else:
-		HController_Modules["HController"]["Keyboard"] =  cKB.getInput()
+		HController_Modules["HController"]["Keyboard"] = cKB.getInput()
+		# print(HController_Modules["HController"]["Keyboard"], end="\r", flush=True)
 
 	HController_Modules["HController"]["time"] = HController_Modules["HCore"]["time"]
-	# print(HController_Modules["HController"]["Keyboard"], end="\r", flush=True)
 
 def a_stopController():
 	global HController_Modules
