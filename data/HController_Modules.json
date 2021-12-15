@@ -30,7 +30,8 @@
                 "d": false,
                 "p": false,
                 "esc": false
-            }
+            },
+            "time": "00:00:00"
         }
     },
     "listener": ["HCore"]

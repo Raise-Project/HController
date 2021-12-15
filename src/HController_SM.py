@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Sat Nov 27 2021
+Last Modified: Tue Dec 07 2021
 Modified By: Zentetsu
 
 ----
@@ -96,6 +96,7 @@ def a_SendControl():
 	else:
 		HController_Modules["HController"]["Keyboard"] =  cKB.getInput()
 
+	HController_Modules["HController"]["time"] = HController_Modules["HCore"]["time"]
 	# print(HController_Modules["HController"]["Keyboard"], end="\r", flush=True)
 
 def a_stopController():
@@ -119,9 +120,9 @@ def t_beginSC():
 	global cKB, cPS3
 
 	if cPS3 != -1:
-		return not cPS3.getInput()['ps']
+		return HController_Modules["HCore"]["Active"]
 	else:
-		return not cKB.getInput()['esc']
+		return HController_Modules["HCore"]["Active"]
 
 def t_endSC():
 	return True
@@ -130,9 +131,9 @@ def t_stopController():
 	global cKB, cPS3
 
 	if cPS3 != -1:
-		return cPS3.getInput()['ps']
+		return not HController_Modules["HCore"]["Active"]
 	else:
-		return cKB.getInput()['esc']
+		return not HController_Modules["HCore"]["Active"]
 
 def t_exit():
 	return True
