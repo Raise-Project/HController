@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Sat Nov 18 2020
+Last Modified: Thu Dec 16 2021
 Modified By: Zentetsu
 
 ----
@@ -46,9 +46,13 @@ import threading
 import logging
 import time
 import sys
+import os
 
 if __name__ == "__main__":
     logging.basicConfig(filename=sys.argv[1], format='%(asctime)s - HController - %(levelname)s - %(message)s', level=logging.DEBUG)
+
+    f = open(os.devnull, 'w')
+    sys.stdout = f
 
     logging.info('Init SM')
     state_machine = StateMachine("HController")
