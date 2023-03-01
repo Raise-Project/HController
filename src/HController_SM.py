@@ -42,7 +42,7 @@ import platform
 
 from Controller.ControllerPS3 import ControllerPS3
 
-if "arm" not in platform.machine():
+if "Linux" not in platform.system():
 	from Controller.ControllerKB import ControllerKB
 
 import IRONbark
