@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2023-03-02	Zen	Updating keyboard interaction
 2020-11-18	Zen	Adding gestion for arm and PS3 Controller
 2020-11-07	Zen	Refactoring KB name
 2020-11-06	Zen	Adding state to clean before exit
@@ -41,13 +42,12 @@ HISTORY:
 import platform
 
 from Controller.ControllerPS3 import ControllerPS3
-
-if "Linux" not in platform.system():
-	from Controller.ControllerKB import ControllerKB
+from Controller.ControllerKB import ControllerKB
 
 import IRONbark
 
 import threading
+import logging
 import time
 
 global init_ended, cPS3, HController_Modules, thread
@@ -120,10 +120,7 @@ def t_startController():
 def t_beginSC():
 	global cKB, cPS3
 
-	if cPS3 != -1:
-		return HController_Modules["HCore"]["Active"]
-	else:
-		return HController_Modules["HCore"]["Active"]
+	return HController_Modules["HCore"]["Active"]
 
 def t_endSC():
 	return True
@@ -131,10 +128,7 @@ def t_endSC():
 def t_stopController():
 	global cKB, cPS3
 
-	if cPS3 != -1:
-		return not HController_Modules["HCore"]["Active"]
-	else:
-		return not HController_Modules["HCore"]["Active"]
+	return not HController_Modules["HCore"]["Active"]
 
 def t_exit():
 	return True
