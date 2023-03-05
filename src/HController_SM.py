@@ -36,7 +36,7 @@ HISTORY:
 2020-11-07	Zen	Refactoring KB name
 2020-11-18	Zen	Adding gestion for arm and PS3 Controller
 2023-03-02	Zen	Updating keyboard interaction
-2023-03-05	Zen	Adding debug option
+2023-03-05	Zen	Adding debug option + Updating debug mod
 '''
 
 
@@ -59,7 +59,8 @@ cPS3 = None
 cKB = None
 thread = None
 
-debug = False
+global debug
+debug = 0
 
 #----------------------------------------------------------------------#
 # ------------------------------ States ------------------------------ #
@@ -68,11 +69,13 @@ def a_initController():
 	global debug
 	global init_ended, cPS3, cKB, HController_Modules, thread
 
-	if debug:
+	HController_Modules = IRONbark.Module(file="./data/HController_Modules.json")
+	debug = HController_Modules["HController"]["debug"]
+
+	if debug > 0:
 		logging.debug("Init Controller")
 		print("Init Controller")
 
-	HController_Modules = IRONbark.Module(file="./data/HController_Modules.json")
 
 	cPS3 = ControllerPS3("/dev/input/js0")
 
@@ -92,9 +95,11 @@ def a_Main():
 	global debug
 	global cKB
 
-	if debug:
+	if debug > 0:
 		logging.debug("Main")
 		print("Main")
+
+	debug = HController_Modules["HCore"]["debug"]
 
 	time.sleep(0.1)
 
@@ -102,7 +107,7 @@ def a_SendControl():
 	global debug
 	global cKB, cPS3, HController_Modules
 
-	if debug:
+	if debug > 0:
 		logging.debug("Send Control")
 		print("Send Control")
 
@@ -119,7 +124,7 @@ def a_stopController():
 	global debug
 	global HController_Modules
 
-	if debug:
+	if debug > 0:
 		logging.debug("Stop Controller")
 		print("Stop Controller")
 

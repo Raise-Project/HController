@@ -32,7 +32,8 @@
                 "esc": false
             },
             "time": "00:00:00",
-            "version": "0.1.0"
+            "version": "0.1.1",
+            "debug": 0
         }
     },
     "listener": ["HCore"]
