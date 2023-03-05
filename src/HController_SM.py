@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Tue Dec 07 2021
+Last Modified: Sun Mar 05 2023
 Modified By: Zentetsu
 
 ----
@@ -31,11 +31,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
-2023-03-02	Zen	Updating keyboard interaction
-2020-11-18	Zen	Adding gestion for arm and PS3 Controller
-2020-11-07	Zen	Refactoring KB name
-2020-11-06	Zen	Adding state to clean before exit
 2020-11-04	Zen	First step in implementation of SM HController
+2020-11-06	Zen	Adding state to clean before exit
+2020-11-07	Zen	Refactoring KB name
+2020-11-18	Zen	Adding gestion for arm and PS3 Controller
+2023-03-02	Zen	Updating keyboard interaction
+2023-03-05	Zen	Adding debug option
 '''
 
 
@@ -58,12 +59,18 @@ cPS3 = None
 cKB = None
 thread = None
 
+debug = False
+
 #----------------------------------------------------------------------#
 # ------------------------------ States ------------------------------ #
 #----------------------------------------------------------------------#
 def a_initController():
+	global debug
 	global init_ended, cPS3, cKB, HController_Modules, thread
-	# print("INIT State")
+
+	if debug:
+		logging.debug("Init Controller")
+		print("Init Controller")
 
 	HController_Modules = IRONbark.Module(file="./data/HController_Modules.json")
 
@@ -82,14 +89,22 @@ def a_initController():
 	init_ended = True
 
 def a_Main():
+	global debug
 	global cKB
-	# print("MAIN State")
+
+	if debug:
+		logging.debug("Main")
+		print("Main")
 
 	time.sleep(0.1)
 
 def a_SendControl():
+	global debug
 	global cKB, cPS3, HController_Modules
-	# print("SENDC State")
+
+	if debug:
+		logging.debug("Send Control")
+		print("Send Control")
 
 	if cPS3 != -1:
 		HController_Modules["HController"]["PS3"] = cPS3.getInput()
@@ -101,8 +116,12 @@ def a_SendControl():
 	HController_Modules["HController"]["time"] = HController_Modules["HCore"]["time"]
 
 def a_stopController():
+	global debug
 	global HController_Modules
-	# print("STOPC State")
+
+	if debug:
+		logging.debug("Stop Controller")
+		print("Stop Controller")
 
 	HController_Modules.stopModule()
 
