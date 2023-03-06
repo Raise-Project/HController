@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Sun Mar 05 2023
+Last Modified: Mon Mar 06 2023
 Modified By: Zentetsu
 
 ----
@@ -37,6 +37,7 @@ HISTORY:
 2020-11-18	Zen	Adding gestion for arm and PS3 Controller
 2023-03-02	Zen	Updating keyboard interaction
 2023-03-05	Zen	Adding debug option + Updating debug mod
+2023-03-06	Zen	Correcting StopModules
 '''
 
 
@@ -128,7 +129,7 @@ def a_stopController():
 		logging.debug("Stop Controller")
 		print("Stop Controller")
 
-	HController_Modules.stopModule()
+	HController_Modules.stopModule("HController")
 
 #----------------------------------------------------------------------#
 # ---------------------------- Transitions --------------------------- #
