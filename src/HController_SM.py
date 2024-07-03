@@ -5,12 +5,12 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Mon Mar 06 2023
+Last Modified: Wed Jul 03 2024
 Modified By: Zentetsu
 
 ----
 
-Project: HCore
+Project: HController
 Copyright (c) 2020 Zentetsu
 
 ----
@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2024-07-03	Zen	Adding dict for SM name
 2020-11-04	Zen	First step in implementation of SM HController
 2020-11-06	Zen	Adding state to clean before exit
 2020-11-07	Zen	Refactoring KB name
@@ -60,18 +61,19 @@ cPS3 = None
 cKB = None
 thread = None
 
-global debug
+global debug, dic_Modules
 debug = 0
+dic_Modules = {"HCore": "HCore", "HController": "HCtrl"}
 
 #----------------------------------------------------------------------#
 # ------------------------------ States ------------------------------ #
 #----------------------------------------------------------------------#
 def a_initController():
-	global debug
+	global debug, dic_Modules
 	global init_ended, cPS3, cKB, HController_Modules, thread
 
 	HController_Modules = IRONbark.Module(file="./data/HController_Modules.json")
-	debug = HController_Modules["HController"]["debug"]
+	debug = HController_Modules[dic_Modules["HController"]]["debug"]
 
 	if debug > 0:
 		logging.debug("Init Controller")
@@ -81,11 +83,11 @@ def a_initController():
 	cPS3 = ControllerPS3("/dev/input/js0")
 
 	if cPS3 != -1:
-		del HController_Modules["HController"]["Keyboard"]
+		del HController_Modules[dic_Modules["HController"]]["Keyboard"]
 		thread = threading.Thread(target=cPS3.pairing, args=())
 	else:
 		cKB = ControllerKB()
-		del HController_Modules["HController"]["PS3"]
+		del HController_Modules[dic_Modules["HController"]]["PS3"]
 		thread = threading.Thread(target=cKB.readInput, args=())
 
 	thread.start()
@@ -93,19 +95,19 @@ def a_initController():
 	init_ended = True
 
 def a_Main():
-	global debug
+	global debug, dic_Modules
 	global cKB
 
 	if debug > 0:
 		logging.debug("Main")
 		print("Main")
 
-	debug = HController_Modules["HCore"]["debug"]
+	# debug = HController_Modules[dic_Modules["HCore"]]["debug"]
 
 	time.sleep(0.1)
 
 def a_SendControl():
-	global debug
+	global debug, dic_Modules
 	global cKB, cPS3, HController_Modules
 
 	if debug > 0:
@@ -113,23 +115,25 @@ def a_SendControl():
 		print("Send Control")
 
 	if cPS3 != -1:
-		HController_Modules["HController"]["PS3"] = cPS3.getInput()
-		# print(HController_Modules["HController"]["PS3"], end="\r", flush=True)
+		HController_Modules[dic_Modules["HController"]]["PS3"] = cPS3.getInput()
+		print(HController_Modules[dic_Modules["HController"]]["PS3"], end="\r", flush=True)
 	else:
-		HController_Modules["HController"]["Keyboard"] = cKB.getInput()
-		# print(HController_Modules["HController"]["Keyboard"], end="\r", flush=True)
+		HController_Modules[dic_Modules["HController"]]["Keyboard"] = cKB.getInput()
+		print(HController_Modules[dic_Modules["HController"]]["Keyboard"], end="\r", flush=True)
 
-	HController_Modules["HController"]["time"] = HController_Modules["HCore"]["time"]
+	HController_Modules[dic_Modules["HController"]]["time"] = HController_Modules[dic_Modules["HCore"]]["time"]
 
 def a_stopController():
-	global debug
+	global debug, dic_Modules
 	global HController_Modules
+
+	print(debug)
 
 	if debug > 0:
 		logging.debug("Stop Controller")
 		print("Stop Controller")
 
-	HController_Modules.stopModule("HController")
+	HController_Modules.stopModule(dic_Modules["HController"])
 
 #----------------------------------------------------------------------#
 # ---------------------------- Transitions --------------------------- #
@@ -145,7 +149,7 @@ def t_startController():
 def t_beginSC():
 	global cKB, cPS3
 
-	return HController_Modules["HCore"]["Active"]
+	return HController_Modules[dic_Modules["HCore"]]["Active"]
 
 def t_endSC():
 	return True
@@ -153,7 +157,7 @@ def t_endSC():
 def t_stopController():
 	global cKB, cPS3
 
-	return not HController_Modules["HCore"]["Active"]
+	return not HController_Modules[dic_Modules["HCore"]]["Active"]
 
 def t_exit():
 	return True

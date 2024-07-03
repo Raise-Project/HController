@@ -1,7 +1,7 @@
 {
     "name": "HController_Module",
     "sender": {
-        "HController": {
+        "HCtrl": {
             "PS3": {
                 "leftx": 0,
                 "lefty": 0,
@@ -32,9 +32,11 @@
                 "esc": false
             },
             "time": "00:00:00",
-            "version": "0.1.2",
-            "debug": 0
+            "version": "0.1.3",
+            "debug": 1
         }
     },
-    "listener": ["HCore"]
+    "listener": [
+        "HCore"
+    ]
 }
